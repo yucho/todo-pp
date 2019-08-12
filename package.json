@@ -2,10 +2,9 @@
   "name": "todo-pp",
   "version": "1.0.0",
   "description": "Your average to-do app, but ever so slightly better",
-  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js"
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js"
   },
   "author": "Yucho Ho <yucho.ho@gmail.com> (https://yuchoho.com)",
   "license": "ISC",
