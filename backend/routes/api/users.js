@@ -1,6 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../../models/User');
+const keys = require('../../config/keys');
 
 const router = express.Router();
 
@@ -11,7 +13,7 @@ router.post('/register', (req, res) => {
     .then((user) => {
       if (user) {
         console.log(user);
-        return res.status(400).json({ email: "email already taken" })
+        return res.status(400).json({ email: "Email already taken" })
       } else {
         bcrypt.genSalt(10, (err, salt) => {
           if (err) throw err;
@@ -34,6 +36,32 @@ router.post('/register', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
+  User.findOne({ email: req.body.email })
+    .then(user => {
+      if (!user) {
+        return res.status(404).json({ email: 'Email not found' });
+      }
+
+      bcrypt.compare(req.body.password, user.password)
+        .then((isMatch) => {
+          if (isMatch) {
+            const payload = { id: user.id, name: user.name };
+
+            jwt.sign(
+              payload,
+              keys.secretOrKey,
+              { expiresIn: 3600 },
+              (err, token) => {
+                res.json({
+                  success: true,
+                  token: 'Bearer ' + token
+                });
+              });
+          } else {
+            return res.status(400).json({ password: 'Incorrect password' });
+          }
+        });
+    });
 });
 
 module.exports = router;
