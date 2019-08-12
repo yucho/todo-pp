@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
 const User = require('../../models/User');
 const keys = require('../../config/keys');
 
@@ -12,7 +13,6 @@ router.post('/register', (req, res) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (user) {
-        console.log(user);
         return res.status(400).json({ email: "Email already taken" })
       } else {
         bcrypt.genSalt(10, (err, salt) => {
@@ -45,7 +45,7 @@ router.post('/login', (req, res) => {
       bcrypt.compare(req.body.password, user.password)
         .then((isMatch) => {
           if (isMatch) {
-            const payload = { id: user.id, name: user.name };
+            const payload = { id: user.id, name: user.handle };
 
             jwt.sign(
               payload,
@@ -62,6 +62,14 @@ router.post('/login', (req, res) => {
           }
         });
     });
+});
+
+router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
+  res.json({
+    id: req.user.id,
+    handle: req.user.handle,
+    email: req.user.email
+  });
 });
 
 module.exports = router;
