@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
@@ -7,6 +7,7 @@ import configureStore from '../store/store';
 import jwt_decode from 'jwt-decode';
 import { setAuthToken } from '../util/session-api-util';
 import { logout } from '../actions/session-actions';
+import Modal from './modal/Modal';
 
 const App = () => {
   let store;
@@ -25,6 +26,8 @@ const App = () => {
   } else {
     store = configureStore({});
   }
+
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   return (
     <Provider store={store}>
@@ -45,7 +48,16 @@ const App = () => {
               </li>
               <li>
                 <p>Already have an account?</p>
-                <button className={styles.button}>Login</button>
+                <button
+                  className={styles.button}
+                  onClick={() => setLoginModalOpen(true)}
+                >
+                  Login
+                </button>
+                <Modal
+                  open={loginModalOpen}
+                  close={() => setLoginModalOpen(false)}
+                />
               </li>
               <li>
                 <p>Just wanna give it a try?</p>
