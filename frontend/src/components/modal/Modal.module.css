@@ -1,3 +1,12 @@
+.root {
+  position: fixed;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  top: 0;
+  left: 0;
+}
+
 .container {
   display: none;
 }
@@ -11,4 +20,19 @@
   width: 100px;
   height: 100px;
   background: red;
+}
+
+.background {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200vh;
+  height: 200vh;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.background.open {
+  display: block;
 }
