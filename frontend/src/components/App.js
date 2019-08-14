@@ -30,18 +30,27 @@ const App = () => {
     <Provider store={store}>
       <BrowserRouter>
         <div className="App">
-          <header className="App-header">
+          <header className={styles.header}>
             <h1>todo++</h1>
             <p>
               Your average to-do app, but ever so slightly better. <br />
               <span className={styles.small}>It's free and always will be.</span>
             </p>
           </header>
-          <main>
-            <ul>
-              <li>Login</li>
-              <li>Register</li>
-              <li>Try It</li>
+          <main className={styles.container}>
+            <ul className={styles.menu}>
+              <li>
+                <p>New user?</p>
+                <button className={styles.button}>Register</button>
+              </li>
+              <li>
+                <p>Already have an account?</p>
+                <button className={styles.button}>Login</button>
+              </li>
+              <li>
+                <p>Just wanna give it a try?</p>
+                <button className={styles.button}>Demo</button>
+              </li>
             </ul>
           </main>
         </div>
