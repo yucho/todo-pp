@@ -8,6 +8,7 @@ import jwt_decode from 'jwt-decode';
 import { setAuthToken } from '../util/session-api-util';
 import { logout } from '../actions/session-actions';
 import Modal from './modal/Modal';
+import LoginForm from './form/LoginForm';
 
 const App = () => {
   let store;
@@ -57,7 +58,9 @@ const App = () => {
                 <Modal
                   open={loginModalOpen}
                   close={() => setLoginModalOpen(false)}
-                />
+                >
+                  <LoginForm />
+                </Modal>
               </li>
               <li>
                 <p>Just wanna give it a try?</p>

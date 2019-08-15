@@ -17,14 +17,15 @@ const Modal = (props) => {
   return createPortal(<ModalContainer {...props}/>, modalElement);
 };
 
-const ModalContainer = ({ open, close, children, ...props }) => {
+const ModalContainer = ({ open, close, children }) => {
   return <div
     className={`${styles.background}${open ? ` ${styles.open}` : ''}`}
     onClick={() => close()}
   >
     <div
       className={`${styles.container}${open ? ` ${styles.open}` : ''}`}
-      {...props}
+      onClick={(e) => e.stopPropagation()}
+      children={children}
     />
   </div>
 };

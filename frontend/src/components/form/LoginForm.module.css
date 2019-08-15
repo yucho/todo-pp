@@ -1,0 +1,14 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  min-width: 200px;
+  min-height: 200px;
+  background: #fff;
+  padding: 1em;
+}
+
+.usernameOrEmail, .password {
+  width: 100%;
+  min-height: 1em;
+}
