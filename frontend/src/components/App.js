@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
@@ -7,8 +7,7 @@ import configureStore from '../store/store';
 import jwt_decode from 'jwt-decode';
 import { setAuthToken } from '../util/session-api-util';
 import { logout } from '../actions/session-actions';
-import Modal from './modal/Modal';
-import LoginForm from './form/LoginForm';
+import SplashNav from './splash/SplashNav';
 
 const App = () => {
   let store;
@@ -28,8 +27,6 @@ const App = () => {
     store = configureStore({});
   }
 
-  const [loginModalOpen, setLoginModalOpen] = useState(false);
-
   return (
     <Provider store={store}>
       <BrowserRouter>
@@ -41,33 +38,7 @@ const App = () => {
               <span className={styles.small}>It's free and always will be.</span>
             </p>
           </header>
-          <main className={styles.container}>
-            <ul className={styles.menu}>
-              <li>
-                <p>New user?</p>
-                <button className={styles.button}>Register</button>
-              </li>
-              <li>
-                <p>Already have an account?</p>
-                <button
-                  className={styles.button}
-                  onClick={() => setLoginModalOpen(true)}
-                >
-                  Login
-                </button>
-                <Modal
-                  open={loginModalOpen}
-                  close={() => setLoginModalOpen(false)}
-                >
-                  <LoginForm />
-                </Modal>
-              </li>
-              <li>
-                <p>Just wanna give it a try?</p>
-                <button className={styles.button}>Demo</button>
-              </li>
-            </ul>
-          </main>
+          <SplashNav />
         </div>
       </BrowserRouter>
     </Provider>
