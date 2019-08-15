@@ -1,0 +1,8 @@
+.input {
+  outline: none;
+  border: 1px solid #ddd;
+}
+
+.error {
+  border: 1px solid #f00;
+}
