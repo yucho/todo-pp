@@ -1,5 +1,5 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
 import configureStore from '../store/store';
@@ -8,8 +8,20 @@ import { setAuthToken } from '../util/session-api-util';
 import { logout } from '../actions/session-actions';
 import Header from './header/Header';
 import SplashNav from './splash/SplashNav';
+import Todo from './todo/Todo';
 
 const App = () => {
+  const isAuthenticated = useSelector((state) => state.session.isAuthenticated);
+
+  return (
+    <div className="App">
+      <Header />
+      {isAuthenticated ? <Todo /> : <SplashNav />}
+    </div>
+  );
+};
+
+const Root = ({ children }) => {
   let store;
   if (localStorage.jwtToken) {
     setAuthToken(localStorage.jwtToken);
@@ -30,13 +42,10 @@ const App = () => {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <div className="App">
-          <Header />
-          <SplashNav />
-        </div>
+        <App />
       </BrowserRouter>
     </Provider>
   );
 };
 
-export default App;
+export default Root;
