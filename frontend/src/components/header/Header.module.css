@@ -9,6 +9,7 @@
   background-color: #282c34;
   font-size: calc(10px + 2vmin);
   color: #fff;
+  transition: 0.1s linear;
 }
 
 .header p {
@@ -29,4 +30,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.loggedIn {
+  min-height: 40px;
 }
