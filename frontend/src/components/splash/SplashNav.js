@@ -19,7 +19,7 @@ const SplashNav = () => {
           onClick={() => setLoginModalOpen(true)}
         >
           Login
-                  </button>
+        </button>
         <Modal
           open={loginModalOpen}
           close={() => setLoginModalOpen(false)}
