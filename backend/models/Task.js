@@ -12,6 +12,7 @@ const TaskSchema = new Schema({
     required: true
   },
   status: {
+    type: String,
     enum: ['open', 'closed'],
     default: 'open',
     required: true
@@ -21,4 +22,4 @@ const TaskSchema = new Schema({
   }
 });
 
-export default Task = mongoose.model('tasks', TaskSchema);
+module.exports = Task = mongoose.model('tasks', TaskSchema);

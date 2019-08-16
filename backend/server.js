@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 
 const db = require('./config/keys').mongoURI;
+const tasks = require('./routes/api/tasks');
 const users = require('./routes/api/users');
 const setupPassport = require('./config/passport');
 
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
   res.send('hello');
 });
 
+app.use('/api/tasks', tasks);
 app.use('/api/users', users);
 
 const port = process.env.PORT || 5000;
