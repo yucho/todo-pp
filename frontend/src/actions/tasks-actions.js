@@ -7,7 +7,7 @@ export const RECEIVE_TASKS_ERRORS = 'RECEIVE_TASKS_ERRORS';
 
 export const fetchTasks = () => (dispatch) => {
   return axios.get('/api/tasks')
-    .then((tasks) => dispatch(receiveTasks(tasks)))
+    .then(({ data }) => dispatch(receiveTasks(data)))
     .catch((err) => dispatch(receiveErrors(err)));
 };
 

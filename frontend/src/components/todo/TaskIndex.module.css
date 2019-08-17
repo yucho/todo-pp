@@ -1,0 +1,13 @@
+.table {
+  border-spacing: 0;
+  margin: 0 auto;
+}
+
+.row:nth-child(odd) {
+  background: #282c34;
+  color: #fff;
+}
+
+.table th, .table td {
+  padding: 6px;
+}
