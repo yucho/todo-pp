@@ -14,24 +14,21 @@ const InputValidate = ({
   remoteErrors = null,
   className = styles.input,
   errorClassName = styles.error,
+  value,
   ...props
 }) => {
   if (typeof validators === 'function') {
     validators = [validators];
   }
 
-  const [value, setValue] = useState('');
   const [errors, setErrors] = useState([]);
 
   const combinedClassName =  errors.length > 0 ?
     `${className} ${errorClassName}` :
     className;
-
-  
   
   return <input
     className={combinedClassName}
-    onChange={(e) => setValue(e.target.value)}
     onBlur={() => {
       const errors = [];
       for (const check of validators) {

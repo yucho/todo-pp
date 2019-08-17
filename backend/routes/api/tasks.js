@@ -7,7 +7,11 @@ const router = express.Router();
 router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
   const query = Task.find({ user: req.user });
   query.exec((err, tasks) => {
-    res.json({msg: tasks})
+    if (err) {
+      res.status(400).json(err);
+    } else {
+      res.json(tasks);
+    }
   });
 });
 
