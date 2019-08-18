@@ -8,9 +8,9 @@ const tasksReducer = (prevState = {}, action) => {
   let newState = {};
   switch(action.type) {
     case RECEIVE_TASKS:
-      const _ids = Object.keys(action.tasks);
-      for (const _id of _ids) {
-        newState[_id] = action.tasks[_id];
+      const keys = Object.keys(action.tasks);
+      for (const key of keys) {
+        newState[action.tasks[key]['_id']] = action.tasks[key];
       }
       return Object.assign({}, prevState, newState);
     case RECEIVE_TASK:

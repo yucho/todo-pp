@@ -31,7 +31,8 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 
 router.patch('/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
-    const task = await Task.updateOne({ _id: req.params.id}, req.body);
+    const task = await Task.findOneAndUpdate({ _id: req.params.id}, req.body, { new: true });
+    console.log(task);
     res.json(task);
   } catch (e) {
     res.status(400).json(e);

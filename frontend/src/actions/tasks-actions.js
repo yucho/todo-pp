@@ -18,15 +18,15 @@ export const createTask = (taskData) => (dispatch) => {
 };
 
 export const updateTask = (taskData) => (dispatch) => {
-  const { id, ...data } = taskData;
-  return axios.patch(`/api/tasks/${id}`, data)
+  const { _id, ...data } = taskData;
+  return axios.patch(`/api/tasks/${_id}`, data)
     .then(({ data }) => dispatch(receiveTask(data)))
     .catch((err) => dispatch(receiveErrors(err.response.data)));
 };
 
-export const deleteTask = (id) => (dispatch) => {
-  return axios.delete(`/api/tasks/${id}`)
-    .then(() => dispatch(removeTask(id)))
+export const deleteTask = (_id) => (dispatch) => {
+  return axios.delete(`/api/tasks/${_id}`)
+    .then(() => dispatch(removeTask(_id)))
     .catch((err) => dispatch(receiveErrors(err.response.data)));
 };
 

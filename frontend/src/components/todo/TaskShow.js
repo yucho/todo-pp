@@ -7,7 +7,7 @@ import { updateTask } from "../../actions/tasks-actions";
 import iconEdit from './edit.svg';
 import iconDelete from './delete.svg';
 
-const TaskShow = ({ _id, task: { body, due }}) => {
+const TaskShow = ({ task: { _id, body, due }}) => {
   const dispatch = useDispatch();
   const [localBody, setLocalBody] = useState(body);
   const [localDue, setLocalDue] = useState(!!due ? due : '');
@@ -27,7 +27,15 @@ const TaskShow = ({ _id, task: { body, due }}) => {
       if (bool) {
         return exitCallback ?
           exitCallback :
-          setTimeout(() => setEditing(false), 100);
+          setTimeout(() => {
+            setEditing(false);
+            if (!localBody) {
+              setLocalBody(body);
+            } else {
+              const newDue = !!localDue ? localDue : null;
+              dispatch(updateTask({ _id, body: localBody, due: newDue }));
+            }
+          }, 100);
       } else {
         return clearTimeout(exitCallback);
       }
