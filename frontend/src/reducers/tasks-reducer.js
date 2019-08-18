@@ -3,6 +3,7 @@ import {
   RECEIVE_TASK,
   REMOVE_TASK
 } from '../actions/tasks-actions';
+import { RECEIVE_USER_LOGOUT } from '../actions/session-actions';
 
 const tasksReducer = (prevState = {}, action) => {
   let newState = {};
@@ -20,6 +21,8 @@ const tasksReducer = (prevState = {}, action) => {
       newState = Object.assign({}, prevState);
       delete newState[action._id];
       return newState;
+    case RECEIVE_USER_LOGOUT:
+      return {};
     default:
       return prevState;
   }
