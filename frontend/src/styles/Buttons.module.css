@@ -1,0 +1,21 @@
+.button {
+  display: inline-block;
+  font-size: 1em;
+  font-weight: bold;
+  padding: 0.35em 1.2em;
+  border: 0.1em solid #61dafb;
+  border-radius: 0.12em;
+  outline: none;
+  font-family: 'Roboto',sans-serif;
+  font-weight: 300;
+  color:#61dafb;
+  background: none;
+  text-align: center;
+  transition: all 0.1s;
+  cursor: pointer;
+}
+
+.button:hover{
+  color: #fff;
+  background-color:#61dafb;
+}

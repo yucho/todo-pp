@@ -14,10 +14,4 @@
 .submit {
   composes: button from "../../styles/Buttons.module.css";
   margin-top: 24px;
-  color: #fb61da;
-  border-color: #fb61da;
-}
-
-.submit:hover {
-  background-color: #fb61da;
 }
