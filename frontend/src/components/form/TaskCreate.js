@@ -17,6 +17,12 @@ const TaskCreate = () => {
     }
   }, [open])
 
+  const cancelCallback = () => {
+    setOpen(false);
+    setBody('');
+    setDue('');
+  };
+
   return <section>
       <div
         className={styles.add} 
@@ -27,6 +33,7 @@ const TaskCreate = () => {
       </div>
       <form
         style={open ? {} : { display: 'none' }}
+        className={styles.form}
         onSubmit={(e) => {
           e.preventDefault();
           if (!body) {
@@ -36,7 +43,13 @@ const TaskCreate = () => {
           }
           setBody('');
           setDue('');
-        }}>
+        }}
+        onKeyDown={(e) => {
+          if (e.keyCode === 27) {
+            cancelCallback();
+          }
+        }}
+        >
       <InputValidate
         type="text" value={body} className={styles.text} ref={textInput}
         placeholder="Let's get productive!"
@@ -47,13 +60,9 @@ const TaskCreate = () => {
           onChange={(e) => setDue(e.target.value)}
         />
       </label>
-      <input type="submit" value="Create Task" className={styles.submit} />
+      <input type="submit" value="Add" className={styles.submit} />
       <input type="button" value="Cancel" className={styles.cancel}
-        onClick={() => {
-          setOpen(false);
-          setBody('');
-          setDue('');
-        }}
+        onClick={cancelCallback}
       />
     </form>
   </section>

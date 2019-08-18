@@ -1,8 +1,27 @@
 .input {
-  box-sizing: border-box;
   width: 100%;
   min-height: 1em;
   padding: 8px 10px;
   outline: none;
   border: 1px solid #aaa;
+}
+
+.date {
+  background: transparent url(./calendar.svg)  97% 50% no-repeat ;
+  background-size: 16px;
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  background-color: #fff;
+  outline: none;
+  padding: 3px 5px;
+  width: 100px;
+}
+
+.date::-webkit-inner-spin-button {
+  display: none;
+}
+
+.date::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  cursor: pointer;
 }

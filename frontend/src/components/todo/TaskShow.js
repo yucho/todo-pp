@@ -55,6 +55,7 @@ const TaskShow = ({ task: { _id, body, due }}) => {
       <td>
         {!isEditing && localBody}
         <InputValidate type="text" ref={bodyRef} value={localBody}
+          className={styles.body}
           onChange={(e) => setLocalBody(e.target.value)}
           onKeyDown={(e) => {
             if (e.keyCode === 13) {
@@ -68,6 +69,7 @@ const TaskShow = ({ task: { _id, body, due }}) => {
         {!isEditing && (localDue && moment(localDue).format('Y/M/D'))}
         <InputValidate type="date" ref={dueRef}
           value={localDue && moment(localDue).format('YYYY-MM-DD')}
+          className={styles.due}
           onChange={(e) => setLocalDue(e.target.value)}
           onKeyDown={(e) => {
             if (e.keyCode === 13) {
@@ -78,11 +80,13 @@ const TaskShow = ({ task: { _id, body, due }}) => {
         />
       </td>
       <td>
-        <img style={iconStyle} alt="Edit task" title="Edit task" 
+        <img style={iconStyle} alt="Edit task" title="Edit task"
           src={iconEdit} onClick={() => setEditing(true)}
+          className={styles.icon}
         />
         <img style={iconStyle} alt="Delete task" title="Delete task"
           src={iconDelete} onClick={() => setDeleting(true)}
+          className={styles.icon}
         />
         <TaskDelete open={isDeleting} close={() => setDeleting(false)}
           _id={_id} body={body}

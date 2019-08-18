@@ -1,4 +1,22 @@
-.row:nth-child(odd) {
-  background: #282c34;
-  color: #fff;
+.row:nth-child(even) {
+  background: #eee;
+}
+
+.body {
+  composes: input from "../../styles/Forms.module.css";
+  font-size: 1em;
+}
+
+.due {
+  composes: date from "../../styles/Forms.module.css";
+}
+
+.icon {
+  margin: 2px;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.icon:hover {
+  opacity: 1;
 }

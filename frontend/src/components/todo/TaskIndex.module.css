@@ -1,8 +1,41 @@
 .table {
   border-spacing: 0;
+  width: 100%;
+  max-width: 1024px;
   margin: 0 auto;
+}
+
+.table th {
+  background: #eee;
 }
 
 .table th, .table td {
   padding: 6px;
+}
+
+.table td:nth-child(1) {
+  width: 40px;
+}
+
+.table th:nth-child(2), .table td:nth-child(2) {
+  text-align: left;
+}
+
+.table th span {
+  vertical-align: middle;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+
+.createContainer {
+  text-align: left;
+}
+
+@media (min-width: 481px) {
+  .table th:nth-child(1) {
+  }
 }
