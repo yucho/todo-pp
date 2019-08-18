@@ -40,9 +40,9 @@ export const receiveTask = (task) => ({
   task
 });
 
-export const removeTask = (id) => ({
+export const removeTask = (_id) => ({
   type: REMOVE_TASK,
-  id
+  _id
 });
 
 export const receiveErrors = (errors) => ({

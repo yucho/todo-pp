@@ -1,0 +1,55 @@
+.container {
+  background: #fff;
+  min-width: 300px;
+  padding: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 3px;
+  box-shadow: 0 0 5px #616161;
+}
+
+.message {
+  flex-basis: 100%;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #aaa;
+}
+
+.buttons {
+  display: flex;
+  flex-basis: 100%;
+  padding-top: 12px;
+  justify-content: flex-end;
+}
+
+.button {
+  display: inline-block;
+  font-size: 1em;
+  font-weight: bold;
+  padding: 0.35em 1.2em;
+  margin-left: 12px;
+  border: 0.1em solid #fb3161;
+  border-radius: 0.12em;
+  outline: none;
+  font-family: 'Roboto',sans-serif;
+  font-weight: 300;
+  color: #fb3161;
+  background: none;
+  text-align: center;
+  transition: all 0.1s;
+  cursor: pointer;
+}
+
+.button:hover{
+  color: #fff;
+  background-color: #fb3161;
+}
+
+.cancel.button {
+  color: #616161;
+  border-color: #616161;
+}
+
+.cancel.button:hover{
+  color: #fff;
+  background-color: #616161;
+}

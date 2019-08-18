@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import moment from 'moment';
 import * as styles from './TaskShow.module.css';
 import InputValidate from '../form/InputValidate';
+import TaskDelete from './TaskDelete';
 import { updateTask } from "../../actions/tasks-actions";
 import iconEdit from './edit.svg';
 import iconDelete from './delete.svg';
@@ -12,6 +13,7 @@ const TaskShow = ({ task: { _id, body, due }}) => {
   const [localBody, setLocalBody] = useState(body);
   const [localDue, setLocalDue] = useState(!!due ? due : '');
   const [isEditing, setEditing] = useState(false);
+  const [isDeleting, setDeleting] = useState(false);
   const bodyRef = useRef(null);
   const dueRef = useRef(null);
 
@@ -80,7 +82,10 @@ const TaskShow = ({ task: { _id, body, due }}) => {
           src={iconEdit} onClick={() => setEditing(true)}
         />
         <img style={iconStyle} alt="Delete task" title="Delete task"
-          src={iconDelete}
+          src={iconDelete} onClick={() => setDeleting(true)}
+        />
+        <TaskDelete open={isDeleting} close={() => setDeleting(false)}
+          _id={_id} body={body}
         />
       </td>
     </tr>

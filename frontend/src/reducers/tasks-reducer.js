@@ -18,7 +18,7 @@ const tasksReducer = (prevState = {}, action) => {
       return Object.assign({}, prevState, { [_id]: action.task });
     case REMOVE_TASK:
       newState = Object.assign({}, prevState);
-      delete newState[action.id];
+      delete newState[action._id];
       return newState;
     default:
       return prevState;
