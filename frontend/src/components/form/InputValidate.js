@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import * as styles from './InputValidate.module.css';
 
 // validators are function(s) that get run against input value, and returning
@@ -8,15 +8,15 @@ import * as styles from './InputValidate.module.css';
 //
 // remoteErrors are parsed by and passed down from parent
 //
-const InputValidate = ({
+const InputValidate = forwardRef(({
   validators = () => '',
   setLocalErrors = () => {},
   remoteErrors = null,
   className = styles.input,
   errorClassName = styles.error,
-  value,
+  value = '',
   ...props
-}) => {
+}, ref) => {
   if (typeof validators === 'function') {
     validators = [validators];
   }
@@ -28,7 +28,9 @@ const InputValidate = ({
     className;
   
   return <input
+    ref={ref}
     className={combinedClassName}
+    value={value}
     onBlur={() => {
       const errors = [];
       for (const check of validators) {
@@ -42,6 +44,6 @@ const InputValidate = ({
     }}
     {...props}
   />
-};
+});
 
 export default InputValidate;

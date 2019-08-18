@@ -6,7 +6,7 @@ import { createTask } from "../../actions/tasks-actions";
 const TaskCreate = () => {
   const dispatch = useDispatch();
   const [body, setBody] = useState('');
-  const [due, setDue] = useState(null);
+  const [due, setDue] = useState('');
 
   return <form onSubmit={(e) => {
       e.preventDefault();
