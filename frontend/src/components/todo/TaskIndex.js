@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as styles from './TaskIndex.module.css';
+import TaskCreate from '../form/TaskCreate';
 import TaskShow from './TaskShow';
 import { fetchTasks } from '../../actions/tasks-actions';
 
@@ -18,7 +19,7 @@ const TaskIndex = () => {
   }, [dispatch]);
   
   return <section>
-    <table className={styles.table}>
+    <table className={styles.header}>
       <tbody>
         <tr className={styles.row}>
           <th>Done</th>
@@ -26,6 +27,12 @@ const TaskIndex = () => {
           <th>Due</th>
           <th />
         </tr>
+      </tbody>
+    </table>
+    <TaskCreate />
+    <table className={styles.table}>
+      <tbody>
+        
         {tasksArr}
       </tbody>
     </table>

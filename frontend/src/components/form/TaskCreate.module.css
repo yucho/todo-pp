@@ -1,0 +1,67 @@
+.add {
+  cursor: pointer;
+  color: #616161;
+}
+
+.add:hover {
+  color: #000;
+}
+
+.plus {
+  color: #a1dafb;
+}
+
+.plus:hover {
+  color: #61dafb;
+}
+
+.form {
+  width: 100%;
+  max-width: 1024px;
+}
+
+.text {
+  composes: input from "../../styles/Forms.module.css";
+  font-size: 1em;
+  width: 100%;
+  max-width: 500px;
+  margin: 12px;
+}
+
+.date {
+  background: transparent url(./calendar.svg)  97% 50% no-repeat ;
+  background-size: 16px;
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  background-color: #fff;
+  outline: none;
+  padding: 3px 5px;
+  width: 100px;
+}
+
+.date::-webkit-inner-spin-button {
+  display: none;
+}
+
+.date::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  cursor: pointer;
+}
+
+label {
+  display: block;
+}
+
+.submit {
+  composes: button from "../../styles/Buttons.module.css";
+}
+
+.cancel {
+  composes: button from "../../styles/Buttons.module.css";
+  color: #999;
+  border-color: #999;
+}
+
+.cancel:hover {
+  background-color: #999;
+}
