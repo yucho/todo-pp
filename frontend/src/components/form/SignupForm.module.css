@@ -6,6 +6,10 @@
   composes: container from "../../styles/Modals.module.css";
 }
 
+.form label {
+  margin: 0;
+}
+
 .input {
   composes: input from "../../styles/Forms.module.css";
   margin-top: 4px;
