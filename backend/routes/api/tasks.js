@@ -31,8 +31,10 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 
 router.patch('/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
-    const task = await Task.findOneAndUpdate({ _id: req.params.id}, req.body, { new: true });
-    console.log(task);
+    const task = await Task.findOneAndUpdate({
+      _id: req.params.id,
+      user: req.user
+    }, req.body, { new: true });
     res.json(task);
   } catch (e) {
     res.status(400).json(e);
@@ -41,7 +43,10 @@ router.patch('/:id', passport.authenticate('jwt', { session: false }), async (re
 
 router.delete('/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
-    await Task.deleteOne({ _id: req.params.id });
+    await Task.deleteOne({
+      _id: req.params.id,
+      user: req.user
+    });
     res.status(200).json('success');
   } catch (e) {
     res.status(400).json(e);
