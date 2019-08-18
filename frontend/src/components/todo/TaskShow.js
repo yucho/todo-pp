@@ -52,7 +52,7 @@ const TaskShow = ({ task: { _id, body, due }}) => {
       <td><input type="checkbox" /></td>
       <td>
         {!isEditing && localBody}
-        <InputValidate type="text" value={localBody} ref={bodyRef}
+        <InputValidate type="text" ref={bodyRef} value={localBody}
           onChange={(e) => setLocalBody(e.target.value)}
           onKeyDown={(e) => {
             if (e.keyCode === 13) {
@@ -64,7 +64,8 @@ const TaskShow = ({ task: { _id, body, due }}) => {
       </td>
       <td>
         {!isEditing && (localDue && moment(localDue).format('Y/M/D'))}
-        <InputValidate type="date" value={localDue} ref={dueRef}
+        <InputValidate type="date" ref={dueRef}
+          value={localDue && moment(localDue).format('YYYY-MM-DD')}
           onChange={(e) => setLocalDue(e.target.value)}
           onKeyDown={(e) => {
             if (e.keyCode === 13) {
