@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import * as styles from './SplashNav.module.css';
 import Modal from '../modal/Modal';
 import LoginForm from '../form/LoginForm'
+import { login } from '../../actions/session-actions';
 
 const SplashNav = () => {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const dispatch = useDispatch();
 
   return <main className={styles.container}>
     <ul className={styles.menu}>
@@ -29,7 +32,12 @@ const SplashNav = () => {
       </li>
       <li>
         <p>Just wanna give it a try?</p>
-        <button className={styles.button}>Demo</button>
+        <button
+          className={styles.button}
+          onClick={() => dispatch(login({ username: 'demo@example.com', password: 'hunter12' }))}
+        >
+          Demo
+        </button>
       </li>
     </ul>
   </main>
