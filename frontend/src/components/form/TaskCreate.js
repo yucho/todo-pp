@@ -4,11 +4,10 @@ import * as styles from './TaskCreate.module.css';
 import InputValidate from './InputValidate';
 import { createTask } from "../../actions/tasks-actions";
 
-const TaskCreate = () => {
+const TaskCreate = ({ open, setOpen }) => {
   const dispatch = useDispatch();
   const [body, setBody] = useState('');
   const [due, setDue] = useState('');
-  const [open, setOpen] = useState(false);
   const textInput = useRef(null);
 
   useEffect(() => {
