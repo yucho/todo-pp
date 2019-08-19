@@ -4,14 +4,15 @@ import moment from 'moment';
 import * as styles from './TaskShow.module.css';
 import InputValidate from '../form/InputValidate';
 import TaskDelete from './TaskDelete';
-import { updateTask } from "../../actions/tasks-actions";
+import { updateTask, receiveTask } from "../../actions/tasks-actions";
 import iconEdit from './edit.svg';
 import iconDelete from './delete.svg';
 
-const TaskShow = ({ task: { _id, body, due }}) => {
+const TaskShow = ({ task: { _id, body, due, status }}) => {
   const dispatch = useDispatch();
   const [localBody, setLocalBody] = useState(body);
   const [localDue, setLocalDue] = useState(!!due ? due : '');
+  const [isChecked, setIsChecked] = useState(status === 'done');
   const [isEditing, setEditing] = useState(false);
   const [isDeleting, setDeleting] = useState(false);
   const bodyRef = useRef(null);
@@ -51,7 +52,21 @@ const TaskShow = ({ task: { _id, body, due }}) => {
   };
 
   return <tr key={_id} className={styles.row}>
-      <td><input type="checkbox" /></td>
+      <td>
+        <input type="checkbox" className={styles.checkbox} checked={isChecked}
+          onChange={(e) => {
+            setIsChecked(e.target.checked);
+            const newTask = {
+              _id,
+              body: !!localBody ? localBody : body,
+              due: !!localDue ? localDue : due,
+              status: e.target.checked ? 'done' : 'open'
+            };
+            dispatch(receiveTask(newTask));
+            dispatch(updateTask(newTask));
+          }}
+        />
+      </td>
       <td>
         {!isEditing && localBody}
         <InputValidate type="text" ref={bodyRef} value={localBody}

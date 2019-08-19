@@ -2,6 +2,11 @@
   background: #eee;
 }
 
+.checkbox {
+  width: 16px;
+  height: 16px;
+}
+
 .body {
   composes: input from "../../styles/Forms.module.css";
   font-size: 1em;
