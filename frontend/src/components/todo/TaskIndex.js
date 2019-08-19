@@ -32,10 +32,13 @@ const TaskIndex = () => {
     const newOrder = order.slice();
     const old = order[1][1];
     if (old === '') {
+      newOrder[0][1] = 'desc';
       newOrder[1][1] = 'desc';
     } else if (old === 'desc') {
+      newOrder[0][1] = 'asc';
       newOrder[1][1] = 'asc';
     } else {
+      newOrder[0][1] = 'desc';
       newOrder[1][1] = '';
     }
     return newOrder;
@@ -83,13 +86,20 @@ const SortIcon = ({ msg, ...props }) => {
   return <img alt={msg} title={msg} src={iconSort} className={styles.icon} {...props} />
 };
 
-const timestamp = (_id) => parseInt(_id.toString().substring(0, 8), 16);
+const compareIds = (a_id, b_id) => {
+  const a_timestamp = parseInt(a_id.slice(0, 8), 16);
+  const b_timestamp = parseInt(b_id.slice(0, 8), 16);
+  const timeDiff = a_timestamp - b_timestamp;
+  if (timeDiff !== 0) return timeDiff;
+
+  const a_counter = parseInt(a_id.slice(18), 16);
+  const b_counter = parseInt(b_id.slice(18), 16);
+  return a_counter - b_counter;
+};
 
 const compareFunctions = {
-  timestamp: (a, b, order) => {
-    const a_id = timestamp(a._id);
-    const b_id = timestamp(b._id);
-    return order === 'asc' ? a_id - b_id : b_id - a_id;
+  timestamp: ({ _id: a }, { _id: b}, order) => {
+    return order === 'asc' ? compareIds(a, b) : compareIds(b, a);
   },
   due: (a, b, order) => {
     if (!order) {
