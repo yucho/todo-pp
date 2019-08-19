@@ -19,3 +19,8 @@
   composes: button from "../../styles/Buttons.module.css";
   margin-top: 24px;
 }
+
+.error {
+  font-size: 12px;
+  color: red;
+}
