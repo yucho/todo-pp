@@ -9,30 +9,48 @@ const router = express.Router();
 
 router.get('/', (req, res) => res.json({ msg: "This is the users route" }));
 
-router.post('/register', (req, res) => {
-  User.findOne({ email: req.body.email })
-    .then((user) => {
-      if (user) {
-        return res.status(400).json({ email: "Email already taken" })
-      } else {
-        bcrypt.genSalt(10, (err, salt) => {
-          if (err) throw err;
+const createTutorialTasks = (user) => [
+  new Task({
+    user,
+    body: 'Click "Add Task" to create a new task!'
+  }),
+  new Task({
+    user,
+    body: '← checkbox to mark as done'
+  }),
+  new Task({
+    user,
+    body: 'Table headers toggle sort',
+    due: new Date()
+  })
+];
 
-          bcrypt.hash(req.body.password, salt, (err, hash) => {
-            if (err) throw err;
-
-            const newUser = new User({
-              handle: req.body.handle,
-              email: req.body.email,
-              password: hash
-            });
-            newUser.save()
-              .then(({ _id, handle, email }) => res.json({ _id, handle, email }))
-              .catch(err => console.log(err));
-          })
+router.post('/register', async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (user) {
+    return res.status(400).json({ email: "Email already taken" })
+  } else {
+    const hash = await new Promise((resolve, reject) => {
+      bcrypt.genSalt(10, (err, salt) => {
+        if (err) reject(err);
+        bcrypt.hash(req.body.password, salt, (err, hash) => {
+          if (err) reject(err);
+          resolve(hash);
         });
-      }
+      });
     });
+
+    const newUser = await User.create({
+      handle: req.body.handle,
+      email: req.body.email,
+      password: hash
+    });
+    for (task of createTutorialTasks(newUser)) {
+      await task.save();
+    }
+    const { _id, handle, email } = newUser;
+    res.json({ _id, handle, email });
+  }
 });
 
 router.post('/login', (req, res) => {

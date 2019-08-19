@@ -47,7 +47,7 @@ const SplashNav = () => {
         <button
           className={styles.demo}
           onClick={() => dispatch(login({
-            username: 'demo@example.com', password: 'hunter12'
+            email: 'demo@example.com', password: 'hunter12'
           }))}
         >
           Demo
