@@ -1,5 +1,6 @@
 .root {
   position: fixed;
+  z-index: 20;
   width: 0;
   height: 0;
   overflow: visible;

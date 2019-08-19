@@ -10,6 +10,14 @@
   font-size: calc(10px + 2vmin);
   color: #fff;
   transition: 0.1s linear;
+  position: relative;
+  z-index: 10;
+}
+
+.loggedIn .container {
+  width: 100%;
+  max-width: 1024px;
+  position: relative;
 }
 
 .header p {
@@ -20,6 +28,10 @@
   font-size: 0.7em;
   color: #ddd;
   margin: 1em;
+}
+
+.loggedIn.header h1 {
+  margin: 12px 0;
 }
 
 /* Mobile */
