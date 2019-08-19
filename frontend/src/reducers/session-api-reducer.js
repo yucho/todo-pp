@@ -26,7 +26,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isAuthenticated: true
-      }
+      };
     default:
       return state;
   }

@@ -27,7 +27,7 @@ router.post('/register', (req, res) => {
               password: hash
             });
             newUser.save()
-              .then(user => res.json(user))
+              .then(({ _id, handle, email }) => res.json({ _id, handle, email }))
               .catch(err => console.log(err));
           })
         });
@@ -36,7 +36,7 @@ router.post('/register', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  User.findOne({ email: req.body.username })
+  User.findOne({ email: req.body.email })
     .then(user => {
       if (!user) {
         return res.status(404).json({ email: 'Email not found' });
