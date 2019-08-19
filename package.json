@@ -8,8 +8,8 @@
     "frontend-install": "npm install --prefix frontend",
     "frontend": "npm start --prefix frontend",
     "server": "nodemon backend/server.js",
-    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
-    "prestart": "npm i; npm run frontend-install"
+    "start": "npm run backend",
+    "prestart": "npm i; npm run build --prefix frontend"
   },
   "author": "Yucho Ho <yucho.ho@gmail.com> (https://yuchoho.com)",
   "license": "ISC",

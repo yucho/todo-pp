@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
@@ -20,9 +21,12 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-  res.send('hello');
-});
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('frontend/build'));
+  app.get('/', (req, res) => {
+    res.sendFile(path.resolve('frontend', 'build', 'index.html'));
+  });
+}
 
 app.use('/api/tasks', tasks);
 app.use('/api/users', users);

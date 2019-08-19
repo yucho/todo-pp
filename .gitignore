@@ -5,7 +5,7 @@
 node_modules/
 
 # config
-backend/config/keys.js
+backend/config/keys_dev.js
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
