@@ -1,5 +1,5 @@
 # Todo++
-Your average to-do app, but ever so slightly better. Live Demo
+Your average to-do app, but ever so slightly better. [Live Demo](https://todo-pp.com)
 
 ## Class Diagram
 
