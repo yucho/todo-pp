@@ -1,7 +1,9 @@
-const path = require('path');
-const express = require('express');
-const mongoose = require('mongoose');
-const passport = require('passport');
+const bodyParser = require('body-parser');
+const express    = require('express');
+const jsend      = require('jsend');
+const mongoose   = require('mongoose');
+const passport   = require('passport');
+const path       = require('path');
 
 const db = require('./config/keys').mongoURI;
 const tasks = require('./routes/api/tasks');
@@ -16,10 +18,9 @@ mongoose
 const app = express();
 app.use(passport.initialize());
 setupPassport(passport);
-
-const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(jsend.middleware);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('frontend/build'));
