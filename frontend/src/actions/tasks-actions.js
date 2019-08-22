@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { parseJSendResponse } from '../util/session-api-util';
 
 export const RECEIVE_TASKS = 'RECEIVE_TASKS';
 export const RECEIVE_TASK = 'RECEIVE_TASK';
@@ -7,27 +8,27 @@ export const RECEIVE_TASKS_ERRORS = 'RECEIVE_TASKS_ERRORS';
 
 export const fetchTasks = () => (dispatch) => {
   return axios.get('/api/tasks')
-    .then(({ data }) => dispatch(receiveTasks(data.data)))
-    .catch((err) => dispatch(receiveErrors(err)));
+    .then(({ data }) => dispatch(receiveTasks(parseJSendResponse(data))))
+    .catch((err) => dispatch(receiveErrors(parseJSendResponse(err))));
 };
 
 export const createTask = (taskData) => (dispatch) => {
   return axios.post('/api/tasks', taskData)
-    .then(({ data }) => dispatch(receiveTask(data.data)))
-    .catch((err) => dispatch(receiveErrors(err.response.data.data)));
+    .then(({ data }) => dispatch(receiveTask(parseJSendResponse(data))))
+    .catch((err) => dispatch(receiveErrors(parseJSendResponse(err.response.data))));
 };
 
 export const updateTask = (taskData) => (dispatch) => {
   const { _id, ...data } = taskData;
   return axios.patch(`/api/tasks/${_id}`, data)
-    .then(({ data }) => dispatch(receiveTask(data.data)))
-    .catch((err) => dispatch(receiveErrors(err.response.data.data)));
+    .then(({ data }) => dispatch(receiveTask(parseJSendResponse(data))))
+    .catch((err) => dispatch(receiveErrors(parseJSendResponse(err.response.data))));
 };
 
 export const deleteTask = (_id) => (dispatch) => {
   return axios.delete(`/api/tasks/${_id}`)
     .then(() => dispatch(removeTask(_id)))
-    .catch((err) => dispatch(receiveErrors(err.response.data.data)));
+    .catch((err) => dispatch(receiveErrors(parseJSendResponse(err.response.data))));
 };
 
 export const receiveTasks = (tasks) => ({

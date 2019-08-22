@@ -69,7 +69,7 @@ router.post('/login', handleServerError(async (req, res) => {
 
 router.get('/current', authenticate, handleServerError(async (req, res) => {
   res.status(codes.OK).jsend.success({
-    id: req.user.id,
+    _id: req.user.id,
     handle: req.user.handle,
     email: req.user.email
   });

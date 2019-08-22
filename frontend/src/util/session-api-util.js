@@ -1,5 +1,10 @@
 import axios from 'axios';
 
+export const parseJSendResponse = (response) => {
+  const { data } = response;
+  return data;
+};
+
 export const setAuthToken = (token) => {
   if(token) {
     axios.defaults.headers.common['Authorization'] = token;
