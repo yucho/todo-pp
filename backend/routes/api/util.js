@@ -4,7 +4,7 @@ const passport = require('passport');
 const authenticate = (req, res, next) => {
   passport.authenticate('jwt', (err, user, info) => {
     if (err) return next(err);
-    if (!user) return res.status(codes.UNAUTHORIZED).jsend.error('Unauthorized');
+    if (!user) return res.status(codes.UNAUTHORIZED).jsend.fail('Unauthorized');
     req.user = user;
     next();
   })(req, res, next);
@@ -22,18 +22,33 @@ const handleServerError = (route) => {
   };
 };
 
-const simplifyMongooseError = (err) => {
+const jsendifyMongooseError = (err) => {
   const { errors } = err;
-  const simplifiedError = {};
-  for (const key of Object.keys(errors)) {
-    const { message } = errors[key];
-    simplifiedError[key] = message;
+
+  // Single error
+  if (!errors) {
+    return jsendifySingleError(err);
   }
-  return simplifiedError;
+
+  // Multiple errors
+  const jsendifiedError = {};
+  for (const key of Object.keys(errors)) {
+    jsendifiedError[key] = errors[key].message;
+  }
+  return jsendifiedError;
 };
+
+const jsendifySingleError = (err) => {
+  const { path, message } = err;
+  if (path) {
+    return { [path]: message }
+  } else {
+    return message;
+  }
+}
 
 module.exports = {
   authenticate,
   handleServerError,
-  simplifyMongooseError
+  jsendifyMongooseError
 };

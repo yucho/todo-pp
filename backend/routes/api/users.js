@@ -12,9 +12,9 @@ const router = express.Router();
 router.get('/', (req, res) => res.json({ msg: "This is the users route" }));
 
 const createTutorialTasks = (user) => {
-  Task.create({ user, body: 'Click "Add Task" to create a new task!' });
-  Task.create({ user, body: '← checkbox to mark as done' });
-  Task.create({ user, body: 'Table headers toggle sort', due: new Date() });
+  Task.create({ user, body: 'Click "Add Task"' });
+  Task.create({ user, body: '← Click the checkbox to mark as done' });
+  Task.create({ user, body: 'Click the table headers', due: new Date() });
 };
 
 router.post('/register', handleServerError(async (req, res) => {

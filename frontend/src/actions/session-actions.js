@@ -29,20 +29,20 @@ export const signup = (user) => (dispatch) => (
     // dispatch(receiveUserSignIn())
     dispatch(login(user))
   ), err => (
-    dispatch(receiveErrors(err.response.data))
+    dispatch(receiveErrors(err.response.data.data))
   ))
 );
 
 export const login = (user) => (dispatch) => (
   APIUtil.login(user).then(res => {
-    const { token } = res.data;
+    const { token } = res.data.data;
     localStorage.setItem('jwtToken', token);
     APIUtil.setAuthToken(token);
     const decoded = jwt_decode(token);
     dispatch(receiveCurrentUser(decoded))
   })
     .catch(err => {
-      dispatch(receiveErrors(err.response.data));
+      dispatch(receiveErrors(err.response.data.data));
     })
 );
 

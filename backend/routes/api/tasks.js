@@ -1,45 +1,48 @@
 const express  = require('express');
 const codes    = require('http-status-codes');
 
-const { authenticate, simplifyMongooseError } = require('./util');
+const {
+  authenticate,
+  handleServerError,
+  jsendifyMongooseError
+} = require('./util');
 const Task = require('../../models/Task');
 
 const router = express.Router();
 
-router.get('/', authenticate, async (req, res) => {
+router.get('/', authenticate, handleServerError(async (req, res) => {
   try {
-    const tasks = await Task.find({ user: req.user }).exec();
+    const tasks = await Task.find({ user: req.user }).select('body status due').exec();
     res.status(codes.OK).jsend.success(tasks);
   } catch (e) {
-    res.status(codes.NOT_FOUND).jsend.fail(err);
+    res.status(codes.NOT_FOUND).jsend.fail(jsendifyMongooseError(e));
   }
-});
+}));
 
-router.post('/', authenticate, async (req, res) => {
+router.post('/', authenticate, handleServerError(async (req, res) => {
   try {
-    const newTask = await Task.create({
+    const { _id, body, status, due } = await Task.create({
       user: req.user,
       body: req.body.body,
       due: req.body.due
     });
-    res.status(codes.CREATED).jsend.success(newTask);
+    res.status(codes.CREATED).jsend.success({ _id, body, status, due });
   } catch (e) {
-    const errors = simplifyMongooseError(e);
-    res.status(codes.BAD_REQUEST).jsend.fail(errors);
+    res.status(codes.BAD_REQUEST).jsend.fail(jsendifyMongooseError(e));
   }
-});
+}));
 
-router.patch('/:id', authenticate, async (req, res) => {
+router.patch('/:id', authenticate, handleServerError(async (req, res) => {
   try {
-    const task = await Task.findOneAndUpdate({
+    const { _id, body, status, due } = await Task.findOneAndUpdate({
       _id: req.params.id,
       user: req.user
-    }, req.body, { new: true });
-    res.status(codes.OK).jsend.success(task);
+    }, req.body, { new: true, runValidators: true });
+    res.status(codes.OK).jsend.success({ _id, body, status, due });
   } catch (e) {
-    res.status(codes.BAD_REQUEST).jsend.fail(e);
+    res.status(codes.BAD_REQUEST).jsend.fail(jsendifyMongooseError(e));
   }
-});
+}));
 
 router.delete('/:id', authenticate, async (req, res) => {
   try {
@@ -47,9 +50,9 @@ router.delete('/:id', authenticate, async (req, res) => {
       _id: req.params.id,
       user: req.user
     });
-    res.status(codes.OK).jsend.success();
+    res.status(codes.OK).jsend.success(null);
   } catch (e) {
-    res.status(codes.BAD_REQUEST).jsend.fail(e);
+    res.status(codes.BAD_REQUEST).jsend.fail(jsendifyMongooseError(e));
   }
 });
 
