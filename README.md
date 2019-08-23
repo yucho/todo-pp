@@ -2,9 +2,11 @@
 Your average to-do app, but ever so slightly better. [Live Site](https://todo-pp.com)
 
 ## Development
-```
-// Instructions to run the program locally
+To run the app locally, clone the repo, install Node.js, and run:
+```Bash
+npm i
+npm run dev
 ```
 
-## Database Schema
-Refer to [wiki page](https://github.com/yucho/todo-pp/wiki/Database-Schema)
+## API Doc
+Refer to [wiki page](https://github.com/yucho/todo-pp/wiki)
