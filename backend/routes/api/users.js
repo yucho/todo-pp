@@ -5,7 +5,7 @@ const jwt      = require('jsonwebtoken');
 
 const User = require('../../models/User');
 const keys = require('../../config/keys');
-const { authenticate, handleServerError } = require('./util');
+const { authenticate, jsendifyMongooseError, handleServerError } = require('./util');
 
 const router = express.Router();
 
@@ -24,26 +24,29 @@ router.post('/register', handleServerError(async (req, res) => {
       .status(codes.BAD_REQUEST)
       .jsend.fail({ email: "Email already taken" });
   }
-
-  const hash = await new Promise((resolve, reject) => {
-    bcrypt.genSalt(10, (err, salt) => {
-      if (err) reject(err);
-      bcrypt.hash(req.body.password, salt, (err, hash) => {
+  try {
+    const hash = await new Promise((resolve, reject) => {
+      bcrypt.genSalt(10, (err, salt) => {
         if (err) reject(err);
-        resolve(hash);
+        bcrypt.hash(req.body.password, salt, (err, hash) => {
+          if (err) reject(err);
+          resolve(hash);
+        });
       });
     });
-  });
-
-  const newUser = await User.create({
-    handle: req.body.handle,
-    email: req.body.email,
-    password: hash
-  });
-
-  createTutorialTasks(newUser);
-  const { _id, handle, email } = newUser;
-  res.status(codes.CREATED).jsend.success({ _id, handle, email });
+  
+    const newUser = await User.create({
+      handle: req.body.handle,
+      email: req.body.email,
+      password: hash
+    });
+  
+    createTutorialTasks(newUser);
+    const { _id, handle, email } = newUser;
+    res.status(codes.CREATED).jsend.success({ _id, handle, email });
+  } catch (e) {
+    res.status(codes.BAD_REQUEST).jsend.fail(jsendifyMongooseError(e));
+  }
 }));
 
 router.post('/login', handleServerError(async (req, res) => {
