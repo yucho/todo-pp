@@ -1,6 +1,8 @@
 import jwt_decode from 'jwt-decode';
 import * as APIUtil from '../util/session-api-util';
-const { parseJSendResponse } = APIUtil;
+const {
+  parseAxiosSuccess, parseAxiosError, parseJSendSuccess, parseJSendError
+} = APIUtil;
 
 export const RECEIVE_CURRENT_USER = "RECEIVE_CURRENT_USER";
 export const RECEIVE_SESSION_ERRORS = "RECEIVE_SESSION_ERRORS";
@@ -23,19 +25,21 @@ export const logoutUser = () => ({
 export const signup = (user) => (dispatch) => (
   APIUtil.signup(user)
     .then(() => dispatch(login(user)))
-    .catch((err) => dispatch(receiveErrors(parseJSendResponse(err.response.data))))
+    .catch((err) => (
+      dispatch(receiveErrors(parseJSendError(parseAxiosError(err))))
+    ))
 );
 
 export const login = (user) => (dispatch) => (
   APIUtil.login(user).then(res => {
-    const { token } = parseJSendResponse(res.data);
+    const { token } = parseJSendSuccess(parseAxiosSuccess(res));
     localStorage.setItem('jwtToken', token);
     APIUtil.setAuthToken(token);
     const decoded = jwt_decode(token);
     dispatch(receiveCurrentUser(decoded))
   })
-    .catch(err => {
-      dispatch(receiveErrors(parseJSendResponse(err.response.data)));
+    .catch((err) => {
+      dispatch(receiveErrors(parseJSendError(parseAxiosError(err))));
     })
 );
 

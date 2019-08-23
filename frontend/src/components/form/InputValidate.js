@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import * as styles from './InputValidate.module.css';
 
 // validators are function(s) that get run against input value, and returning
@@ -9,41 +9,39 @@ import * as styles from './InputValidate.module.css';
 // remoteErrors are parsed by and passed down from parent
 //
 const InputValidate = forwardRef(({
-  validators = () => '',
-  setLocalErrors = () => {},
-  remoteErrors = null,
+  showLocalErrors,
+  showRemoteErrors,
+  localErrors = [],
+  remoteErrors = [],
   className = styles.input,
   errorClassName = styles.error,
-  value = '',
   ...props
 }, ref) => {
-  if (typeof validators === 'function') {
-    validators = [validators];
-  }
-
-  const [errors, setErrors] = useState([]);
-
+  const errors = localErrors.concat(remoteErrors);
   const combinedClassName =  errors.length > 0 ?
     `${className} ${errorClassName}` :
     className;
-  
+
   return <input
     ref={ref}
     className={combinedClassName}
-    value={value}
-    onBlur={() => {
-      const errors = [];
-      for (const check of validators) {
-        const message = check(value);
-        if (!!message) {
-          errors.push(message);
-        }
-      }
-      setLocalErrors(errors);
-      setErrors(errors);
-    }}
     {...props}
   />
 });
+
+export const validate = (value, validators, setLocalErrors) => () => {
+  if (typeof validators === 'function') {
+    validators = [validators];
+  }
+  const errors = [];
+  for (const check of validators) {
+    const message = check(value);
+    if (!!message) {
+      errors.push(message);
+    }
+  }
+  setLocalErrors(errors);
+  return errors;
+};
 
 export default InputValidate;
