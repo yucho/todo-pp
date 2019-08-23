@@ -15,7 +15,13 @@ const TaskIndex = () => {
   const tasks = useSelector((state) => state.tasks);
   const tasksArr = Object.keys(tasks)
     .map((_id) => tasks[_id])
-    .filter((task) => task.status === filter)
+    .filter((task) => {
+      if (filter === 'all') {
+        return true;
+      } else {
+        return task.status === filter;
+      }
+    })
     .sort((a, b) => compareFunctions[order[0][0]](a, b, order[0][1]))
     .sort((a, b) => compareFunctions[order[1][0]](a, b, order[1][1]))
     .map((task) => {
@@ -27,7 +33,9 @@ const TaskIndex = () => {
     dispatch(fetchTasks());
   }, [dispatch]);
 
-  const sortByStatus = () => setFilter((state) => state === 'open' ? 'done' : 'open');
+  const sortByStatus = () => setFilter((state) => {
+    return (state === 'open') ? 'done' : (state === 'done') ? 'all' : 'open';
+  });
   const sortByDueDate = () => setOrder((order) => {
     const newOrder = order.slice();
     const old = order[1][1];
@@ -60,7 +68,7 @@ const TaskIndex = () => {
           </th>
           <th>
             <span className={styles.toggle} onClick={sortByStatus}>
-              {filter === 'open' ? 'Unfinished Tasks' : 'Finished Tasks'}
+              {filter === 'open' ? 'Unfinished Tasks' : filter === 'done' ? 'Finished Tasks' : 'All Tasks'}
             </span>
           </th>
           <th>
