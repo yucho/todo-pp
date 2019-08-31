@@ -17,10 +17,10 @@ const InputValidate = forwardRef(({
   errorClassName = styles.error,
   ...props
 }, ref) => {
-  const errors = localErrors.concat(remoteErrors);
-  const combinedClassName =  errors.length > 0 ?
-    `${className} ${errorClassName}` :
-    className;
+  let combinedClassName = className;
+  if ((localErrors.length > 0 && showLocalErrors) || (remoteErrors.length > 0 && showRemoteErrors)) {
+    combinedClassName += ` ${errorClassName}`;
+  }
 
   return <input
     ref={ref}

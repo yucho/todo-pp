@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as styles from './SignupForm.module.css';
-import { signup } from '../../actions/session-actions';
+import { signup, clearErrors } from '../../actions/session-actions';
 import InputValidate, { validate } from './InputValidate';
 
 const LoginForm = ({ open }) => {
@@ -44,17 +44,20 @@ const LoginForm = ({ open }) => {
     }
   }, [open, emailInput]);
 
+  const ensureArray = (err) => typeof err === 'string' ? [err] : err;
+  
   useEffect(() => {
-    if (getRemoteErrors && remoteErrors.length > 0) {
+    if (getRemoteErrors && Object.keys(remoteErrors).length > 0) {
       setEmail((state) => ({ ...state, showRemoteErrors: true }));
       setHandle((state) => ({ ...state, showRemoteErrors: true }));
       setPassword((state) => ({ ...state, showRemoteErrors: true }));
-      if (remoteErrors.email) setEmail((state) => ({ ...state, remoteErrors: remoteErrors.email}));
-      if (remoteErrors.handle) setHandle((state) => ({ ...state, remoteErrors: remoteErrors.handle }));
-      if (remoteErrors.password) setPassword((state) => ({ ...state, remoteErrors: remoteErrors.password }));
+      if (remoteErrors.email) setEmail((state) => ({ ...state, remoteErrors: ensureArray(remoteErrors.email) }));
+      if (remoteErrors.handle) setHandle((state) => ({ ...state, remoteErrors: ensureArray(remoteErrors.handle) }));
+      if (remoteErrors.password) setPassword((state) => ({ ...state, remoteErrors: ensureArray(remoteErrors.password) }));
       setGetRemoteErrors(false);
+      dispatch(clearErrors());
     }
-  }, [getRemoteErrors, remoteErrors]);
+  }, [getRemoteErrors, remoteErrors, dispatch]);
 
   const validateEmail = validate(
     email.value,
@@ -72,6 +75,13 @@ const LoginForm = ({ open }) => {
     (err) => setPassword((state) => ({ ...state, localErrors: err }))
   );
 
+  const errorMessage = (field) => (isFormActive && (
+      (field.remoteErrors.length > 0 && field.showRemoteErrors) ?
+        <div className={styles.error}>{field.remoteErrors[0]}</div> :
+        (field.localErrors.length > 0 && field.showLocalErrors) ?
+          <div className={styles.error}>{field.localErrors[0]}</div> : false
+  ));
+
   return <form
     className={styles.form}
     onSubmit={(e) => {
@@ -81,8 +91,8 @@ const LoginForm = ({ open }) => {
       setHandle((state) => ({ ...state, showLocalErrors: true }));
       setPassword((state) => ({ ...state, showLocalErrors: true }));
       if (validateEmail().length === 0 && validateHandle().length === 0 && validatePassword().length === 0) {
-        setGetRemoteErrors(true);
         dispatch(signup({ email: email.value, handle: handle.value, password: password.value }));
+        setGetRemoteErrors(true);
       }
     }}
   >
@@ -95,22 +105,20 @@ const LoginForm = ({ open }) => {
         onChange={(e) => {
           setIsFormActive(true);
           const value = e.target.value;
-          setEmail((state) => ({ ...state, showRemoteErrors: false, value }));
+          setEmail((state) => ({
+            ...state, showRemoteErrors: false, remoteErrors: [], value 
+          }));
         }}
         onBlur={() => {
           setEmail((state) => ({...state, showLocalErrors: true}));
           validateEmail();
         }}
-        remoteErrors={remoteErrors.email}
+        remoteErrors={email.remoteErrors}
+        localErrors={email.localErrors}
         showLocalErrors={isFormActive && email.showLocalErrors}
         showRemoteErrors={isFormActive && email.showRemoteErrors}
       />
-      { isFormActive && (
-        (email.remoteErrors.length > 0) ?
-          <div className={styles.error}>{email.remoteErrors[0]}</div> :
-          (email.localErrors.length > 0) ?
-          <div className={styles.error}>{email.localErrors[0]}</div> : false
-      )}
+      {errorMessage(email)}
     </label>
     <label>handle<br />
       <InputValidate
@@ -119,23 +127,21 @@ const LoginForm = ({ open }) => {
         value={handle.value}
         onChange={(e) => {
           const value = e.target.value;
-          setHandle((state) => ({ ...state, showRemoteErrors: false, value }));
+          setHandle((state) => ({
+            ...state, showRemoteErrors: false, remoteErrors: [], value
+          }));
         }}
         onFocus={() => setIsFormActive(true)}
         onBlur={() => {
           setHandle((state) => ({ ...state, showLocalErrors: true }));
           validateHandle();
         }}
-        remoteErrors={remoteErrors.handle}
+        remoteErrors={handle.remoteErrors}
+        localErrors={handle.localErrors}
         showLocalErrors={isFormActive && handle.showLocalErrors}
         showRemoteErrors={isFormActive && handle.showRemoteErrors}
       />
-      { isFormActive && (
-        (handle.remoteErrors.length > 0) ?
-          <div className={styles.error}>{handle.remoteErrors[0]}</div> :
-          (handle.localErrors.length > 0) ?
-          <div className={styles.error}>{handle.localErrors[0]}</div> : false
-      )}
+      {errorMessage(handle)}
     </label>
     <label>password<br />
       <InputValidate
@@ -144,23 +150,21 @@ const LoginForm = ({ open }) => {
         value={password.value}
         onChange={(e) => {
           const value = e.target.value;
-          setPassword((state) => ({ ...state, showRemoteErrors: false, value }));
+          setPassword((state) => ({
+            ...state, showRemoteErrors: false, remoteErrors: [], value
+          }));
         }}
         onFocus={() => setIsFormActive(true)}
         onBlur={() => {
           setPassword((state) => ({ ...state, showLocalErrors: true }));
           validatePassword();
         }}
-        remoteErrors={remoteErrors.password}
+        remoteErrors={password.remoteErrors}
+        localErrors={password.localErrors}
         showLocalErrors={isFormActive && password.showLocalErrors}
         showRemoteErrors={isFormActive && password.showRemoteErrors}
       />
-      { isFormActive && (
-        (password.remoteErrors.length > 0) ?
-          <div className={styles.error}>{password.remoteErrors[0]}</div> :
-          (password.localErrors.length > 0) ?
-          <div className={styles.error}>{password.localErrors[0]}</div> : false  
-      )}
+      {errorMessage(password)}
     </label>
     <input className={styles.submit} type="submit" value="Register" />
   </form>
