@@ -13,7 +13,7 @@ const TaskSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['open', 'closed'],
+    enum: ['open', 'done'],
     default: 'open',
     required: true
   },
