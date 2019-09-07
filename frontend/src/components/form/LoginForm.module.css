@@ -25,3 +25,8 @@
 .submit:hover {
   background-color: #fb61da;
 }
+
+.error {
+  font-size: 12px;
+  color: red;
+}
